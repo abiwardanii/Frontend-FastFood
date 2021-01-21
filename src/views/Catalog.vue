@@ -43,7 +43,6 @@
               <tr>
                 <th scope="col">MENU</th>
                 <th scope="col">NAME</th>
-                <th scope="col">CATEGORY</th>
                 <th scope="col">PRICE</th>
                 <th colspan="2">ACTION</th>
               </tr>
@@ -55,9 +54,6 @@
                 </td>
                 <td>
                   <strong>{{ menu.product_name }}</strong>
-                </td>
-                <td>
-                  <strong>{{ menu.category_name }}</strong>
                 </td>
                 <td>
                   <strong>Rp.{{ menu.product_price }}</strong>
