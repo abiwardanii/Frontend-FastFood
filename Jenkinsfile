@@ -6,35 +6,26 @@ pipeline {
     agent any
 
     stages {
-        stage("Install Dependecies") {
-            steps {
-                nodejs("node14") {
-                    sh 'npm install'
-                }
-            }
-        }
-        stage("Build Docker Image") {
+        stage("Deploy Docker Compose") {
             steps {
                 script {
-                    builder = docker.build("${dockerhub}:${BRANCH_NAME}")
-                }
+                    sshPublisher(
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'devserver',
+                                verbose: false,
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'docker-compose.yml',
+                                        remoteDirectory: 'app',
+                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d --force-recreate",
+                                        execTimeout: 120000,
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }        
             }
-        }
-        stage("Testing") {
-            steps {
-                script {
-                    builder.inside {
-                        sh 'echo testing berhasil'
-                    }
-                }
-            }
-        }        
-        stage("Push Docker Image") {
-            steps {
-               script {
-                    builder.push()
-                }
-            }
-        }          
-    }
+        }     
 }
