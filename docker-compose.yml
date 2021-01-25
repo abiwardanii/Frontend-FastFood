@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+    frontend:
+      image: abiwardani/jenkins-ui:master
+      ports: 
+          - "4040:8080"
+      networks: 
+          - fastfoodnet
+      environment:
+          - VUE_APP_URL=http://34.234.85.86/
+
+networks: 
+    fastfoodnet:
