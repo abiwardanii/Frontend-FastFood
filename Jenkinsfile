@@ -6,7 +6,6 @@ pipeline {
     agent any
 
     parameters {
-        booleanParam(name: 'Run', defaultValue: false, description: 'Run service')
         choice(name: 'DEPLOY', choices: ['deployment', 'production'], description: 'Choose Branch')
     }
 
@@ -28,7 +27,7 @@ pipeline {
                 echo "testing branch master success"
             }
         }   
-        stage("Image production"){
+        stage("testing branch production"){
             when {
                 expression {
                     params.DEPLOY == 'production' || BRANCH_NAME == 'production'
@@ -37,7 +36,7 @@ pipeline {
             steps {
                 echo "testing branch production success"
             }
-        }   
+        }    
         stage("Deploy Docker Compose Deployment") {
             when {
                 expression {
