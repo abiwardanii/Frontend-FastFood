@@ -27,7 +27,7 @@ pipeline {
                 }
             }
             steps {
-                echo 'master run'
+                echo "build ${BRANCH_NAME} "
             }
         }
         stage("Build Docker Image production") {
@@ -37,7 +37,7 @@ pipeline {
                 }
             }
             steps {
-                echo 'build docker image'
+                echo "build ${env.branch} image"
             }
         }
         stage("Testing") {
@@ -50,9 +50,24 @@ pipeline {
                 echo 'run testing'
             }
         }        
-        stage("Push Docker Image") {
+        stage("Push Docker Image master") {
+            when {
+                expression {
+                    params.DEPLOY == "master"
+                }
+            }
             steps {
-                echo 'push docker image'
+                echo "push ${BRANCH_NAME} image"
+            }
+        }        
+        stage("Push Docker Image master") {
+            when {
+                expression {
+                    params.DEPLOY == "production"
+                }
+            }
+            steps {
+                echo "push ${env.branch} image"
             }
         }        
     }
