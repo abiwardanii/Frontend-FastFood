@@ -1,74 +1,40 @@
-def dockerhub = "abiwardani/jenkins-API"
+def dockerhub = "abiwardani/jenkins-ui"
 def image_name = "${dockerhub}:${BRANCH_NAME}"
 def builder
 
 pipeline {
     agent any
 
-    parameters {
-        booleanParam(name: 'RUNTEST', defaultValue: 'false', description: 'Check Docker image')
-        choice(name: 'DEPLOY', choices: ["master", "production"], description: 'Choose Branch')
-    }
-
-    environment {
-        branch = "production"
-    }
-
     stages {
         stage("Install Dependecies") {
             steps {
-                echo 'installing'
-            }
-        }
-        stage("Build Docker Image master") {
-            when {
-                expression {
-                    params.DEPLOY == "master"
+                nodejs("node14") {
+                    sh 'npm install'
                 }
             }
-            steps {
-                echo "build ${BRANCH_NAME}"
-            }
         }
-        stage("Build Docker Image production") {
-            when {
-                expression {
-                    params.DEPLOY == "production"
-                }
-            }
+        stage("Build Docker Image") {
             steps {
-                echo "build ${env.branch} image"
+                script {
+                    builder = docker.build("${dockerhub}:${BRANCH_NAME}")
+                }
             }
         }
         stage("Testing") {
-            when {
-                expression {
-                    params.RUNTEST
+            steps {
+                script {
+                    builder.inside {
+                        sh 'echo testing berhasil'
+                    }
                 }
             }
-            steps {
-                echo 'run testing'
-            }
         }        
-        stage("Push Docker Image master") {
-            when {
-                expression {
-                    params.DEPLOY == "master"
+        stage("Push Docker Image") {
+            steps {
+               script {
+                    builder.push()
                 }
             }
-            steps {
-                echo "push ${BRANCH_NAME} image"
-            }
-        }        
-        stage("Push Docker Image production") {
-            when {
-                expression {
-                    params.DEPLOY == "production"
-                }
-            }
-            steps {
-                echo "push ${env.branch} image"
-            }
-        }        
+        }          
     }
 }
