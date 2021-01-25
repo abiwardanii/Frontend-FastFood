@@ -7,7 +7,7 @@ services:
       networks: 
           - fastfoodnet
       environment:
-          - VUE_APP_URL=http://34.234.85.86/
+          - VUE_APP_URL=http://3.83.55.143/
 
 networks: 
     fastfoodnet:
