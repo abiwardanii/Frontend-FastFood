@@ -18,26 +18,6 @@ pipeline {
                 }
             }
         }
-        stage("Testing branch master"){
-            when {
-                expression {
-                    params.DEPLOY == 'deployment' || BRANCH_NAME == 'master'
-                }
-            }
-            steps {
-                sh "testing branch ${BRANCH_NAME} success"
-            }
-        }   
-        stage("Testing branch production"){
-            when {
-                expression {
-                    params.DEPLOY == 'production' || BRANCH_NAME == 'production'
-                }
-            }
-            steps {
-                sh "testing branch ${BRANCH_NAME} success"
-            }
-        }   
         stage("Image master"){
             when {
                 expression {
