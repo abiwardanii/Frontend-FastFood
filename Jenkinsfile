@@ -27,7 +27,7 @@ pipeline {
                 }
             }
             steps {
-                echo "build ${BRANCH_NAME} "
+                echo "build ${BRANCH_NAME}"
             }
         }
         stage("Build Docker Image production") {
@@ -60,7 +60,7 @@ pipeline {
                 echo "push ${BRANCH_NAME} image"
             }
         }        
-        stage("Push Docker Image master") {
+        stage("Push Docker Image production") {
             when {
                 expression {
                     params.DEPLOY == "production"
