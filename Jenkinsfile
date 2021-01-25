@@ -45,7 +45,7 @@ pipeline {
                 }
             }
             steps {
-                sciprt {
+                script {
                     builder.inside {
                         sh "Image branch ${BRANCH_NAME} is running"
                     }
@@ -59,7 +59,7 @@ pipeline {
                 }
             }
             steps {
-                sciprt {
+                script {
                     builder.inside {
                         sh "Image branch ${BRANCH_NAME} is running"
                     }
