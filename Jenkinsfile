@@ -18,18 +18,14 @@ pipeline {
                 }
             }
         }
-        stage("Image master"){
+        stage("testing branch master"){
             when {
                 expression {
                     params.DEPLOY == 'deployment' || BRANCH_NAME == 'master'
                 }
             }
             steps {
-                script {
-                    builder.inside {
-                        sh "Image branch ${BRANCH_NAME} is running"
-                    }
-                }
+                echo "testing branch master success"
             }
         }   
         stage("Image production"){
@@ -39,11 +35,7 @@ pipeline {
                 }
             }
             steps {
-                script {
-                    builder.inside {
-                        sh "Image branch ${BRANCH_NAME} is running"
-                    }
-                }
+                echo "testing branch production success"
             }
         }   
         stage("Deploy Docker Compose Deployment") {
