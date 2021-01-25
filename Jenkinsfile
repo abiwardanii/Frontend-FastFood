@@ -7,7 +7,7 @@ pipeline {
 
     parameters {
         booleanParam(name: 'RUNTEST', defaultValue: 'false', description: 'Check Docker image')
-        choice(name: 'DEPLOY', choices: ["master", "production"], description: 'Branch')
+        choice(name: 'DEPLOY', choices: ["master", "production"], description: 'Choose Branch')
     }
 
     environment {
@@ -17,9 +17,7 @@ pipeline {
     stages {
         stage("Install Dependecies") {
             steps {
-               nodejs("node14") {
-                   sh 'npm install'
-               }
+                echo 'installing'
             }
         }
         stage("Build Docker Image master") {
@@ -29,9 +27,7 @@ pipeline {
                 }
             }
             steps {
-                script {
-                    builder = docker.build("${image_name}")
-                }
+                echo 'master run'
             }
         }
         stage("Build Docker Image production") {
@@ -41,9 +37,7 @@ pipeline {
                 }
             }
             steps {
-                script {
-                    builder = docker.build("${dockerhub}:${env.branch}")
-                }
+                echo 'build docker image'
             }
         }
         stage("Testing") {
@@ -53,18 +47,12 @@ pipeline {
                 }
             }
             steps {
-                 script {
-                     builder.inside {
-                         echo "Success Testing Image"
-                     }
-                 }
+                echo 'run testing'
             }
         }        
         stage("Push Docker Image") {
             steps {
-                script {
-                     builder.push()
-                 }
+                echo 'push docker image'
             }
         }        
     }
