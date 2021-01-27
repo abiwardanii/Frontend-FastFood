@@ -1,4 +1,4 @@
-def dockerhub = "abiwardani/jenkins-ui"
+def dockerhub = "abiwardani/jenkins-api"
 def image_name = "${dockerhub}:${BRANCH_NAME}"
 def builder
 
@@ -6,58 +6,51 @@ pipeline {
     agent any
 
     stages {
-        stage("Install Dependencies"){
+        stage("Build Images"){
             steps {
-                 nodejs("node14") {
-                    sh 'npm install'
+                script {
+                    builder = docker.build("${image_name}")
                 }
             }
-        }
-        // stage("Build Docker Image"){
-        //     steps {
-        //         script {
-        //             builder = docker.build("${image_name}")
-        //         }   
-        //     }
-        // }     
-        stage("Testing Docker Image"){
+        }   
+        stage("Testing Images"){
             steps {
                 script {
                     builder.inside {
-                        sh "testing success"
+                        sh 'echo Testing success'
                     }
-                }   
+                }
             }
-        } 
-        stage("Push Docker image")  {
+        }
+        stage("Push image")  {
             steps {
                 script {
                     builder.push()
                 }
             }
-        }    
-        // stage("Deploy Docker Compose Deployment") {
-        //     steps {
-        //         script {
-        //             sshPublisher(
-        //                 publishers: [
-        //                     sshPublisherDesc(
-        //                         configName: 'devserver',
-        //                         verbose: false,
-        //                         transfers: [
-        //                             sshTransfer(
-        //                                 sourceFiles: 'docker-compose.yml',
-        //                                 remoteDirectory: 'app',
-        //                                 execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d --force-recreate",
-        //                                 execTimeout: 120000,
-        //                             )
-        //                         ]
-        //                     )
-        //                 ]
-        //             )
-        //         }        
-        //     }
-        // }     
-  
+        }   
+        stage("Deploy Docker Compose") {
+            steps {
+                script {
+                    sshPublisher(
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'devserver',
+                                verbose: false,
+                                transfers: [
+                                    sshTransfer(
+                                        sourceFiles: 'docker-compose.yml',
+                                        remoteDirectory: 'app',
+                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d --force-recreate",
+                                        execTimeout: 120000,
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }        
+            }
+        }     
+   
     }
 }
