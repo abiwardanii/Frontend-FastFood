@@ -1,4 +1,4 @@
-# fastfood
+# Frontend FastFood
 
 ## Project setup
 ```
