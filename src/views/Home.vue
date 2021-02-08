@@ -404,7 +404,7 @@ export default {
 .cart-digit {
   -webkit-box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.25);
   box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.25);
-  margin-top: 12px;
+  margin-top: 14px;
   padding-bottom: 0.5px;
 }
 .cart-digit-total {
