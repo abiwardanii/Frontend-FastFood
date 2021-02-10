@@ -5,20 +5,19 @@ import router from "./router";
 import store from "./store";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-  faUtensils,
-  faClipboardList,
   faList,
   faCheckCircle,
   faSearch,
   faMinusCircle,
   faPlusCircle,
-  faHamburger,
   faShoppingCart,
   faAddressCard,
   faSignOutAlt,
   faEnvelopeSquare,
   faLock,
   faPlus,
+  faEdit,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faPlusSquare,
@@ -28,14 +27,11 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { BootstrapVue } from "bootstrap-vue";
 
 library.add(
-  faUtensils,
-  faClipboardList,
   faList,
   faCheckCircle,
   faSearch,
   faMinusCircle,
   faPlusCircle,
-  faHamburger,
   faShoppingCart,
   faAddressCard,
   faSignOutAlt,
@@ -43,7 +39,9 @@ library.add(
   faLock,
   faPlus,
   faPlusSquare,
-  faMinusSquare
+  faMinusSquare,
+  faEdit,
+  faTrash,
 );
 
 Vue.use(BootstrapVue);

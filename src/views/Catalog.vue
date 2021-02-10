@@ -64,12 +64,12 @@
                     v-b-modal.UpCatalog
                     @click="editMenu(menu)"
                   >
-                    Edit
+                    <font-awesome-icon :icon="['fas', 'edit']" size="1x"/>
                   </button>
                 </td>
                 <td>
                   <button class="btn btn-danger" @click="delMenu(menu)">
-                    Delete
+                    <font-awesome-icon :icon="['fas', 'trash']" size="1x"/>
                   </button>
                 </td>
               </tr>
