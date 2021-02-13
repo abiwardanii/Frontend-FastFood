@@ -5,43 +5,79 @@ def builder
 pipeline {
     agent any
 
+    parameters {
+        booleanParam(name: 'RUNTEST', defaultValue: 'false', description: 'Testing image')
+        choice(name: 'DEPLOY', choices: ['yes', 'no'], description: 'Deployment')
+    }
+
     stages {
-        stage("Build Images"){
-            steps {
-                script {
-                    builder = docker.build("${image_name}")
+        stage("Install Dependencies")  {
+            when {
+                expression {
+                    params.DEPLOY == 'yes'
                 }
             }
-        }   
-        stage("Testing Images"){
+            steps {
+                nodejs("node14") {
+                    sh 'npm install'
+                }
+            }
+        }
+        stage("Build Docker Image")  {
+            when {
+                expression {
+                    params.DEPLOY == 'yes'
+                }
+            }
+            steps {
+                script {
+                    builder = docker.build(image_name, "--no-cache .") 
+                }
+            }
+        } 
+        stage("Testing Image")  {
+            when {
+                expression {
+                    params.RUNTEST
+                }
+            }
             steps {
                 script {
                     builder.inside {
-                        sh 'echo Testing success'
+                        sh 'echo Testing Success'
                     }
                 }
             }
         }
-        stage("Push image")  {
+        stage("Push Image")  {
+            when {
+                expression {
+                    params.DEPLOY == 'yes'
+                }
+            }
             steps {
                 script {
                     builder.push()
                 }
             }
-        }   
-        stage("Deploy Docker Compose") {
+        } 
+        stage("Deploy") {
+             when {
+                expression {
+                    params.DEPLOY == 'yes'
+                }
+            }
             steps {
                 script {
                     sshPublisher(
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'devserver',
+                                configName: 'fastfood-dev',
                                 verbose: false,
                                 transfers: [
                                     sshTransfer(
                                         sourceFiles: 'docker-compose.yml',
-                                        remoteDirectory: 'app',
-                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd ./app/app; docker-compose stop; docker-compose up -d --force-recreate",
+                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd /home/abi/fastfood; docker-compose stop; docker-compose up -d --force-recreate",
                                         execTimeout: 120000,
                                     )
                                 ]
