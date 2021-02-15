@@ -1,4 +1,4 @@
-def dockerhub = "abiwardani/jenkins-api"
+def dockerhub = "abiwardani/jenkins-ui"
 def image_name = "${dockerhub}:${BRANCH_NAME}"
 def builder
 
@@ -12,11 +12,6 @@ pipeline {
 
     stages {
         stage("Install Dependencies")  {
-            when {
-                expression {
-                    params.DEPLOY == 'yes'
-                }
-            }
             steps {
                 nodejs("node14") {
                     sh 'npm install'
@@ -57,7 +52,10 @@ pipeline {
             }
             steps {
                 script {
-                    builder.push()
+                    checkout scm
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-abi') {
+                        builder.push()
+                    }
                 }
             }
         } 
@@ -77,7 +75,7 @@ pipeline {
                                 transfers: [
                                     sshTransfer(
                                         sourceFiles: 'docker-compose.yml',
-                                        execCommand: "docker pull ${dockerhub}:${BRANCH_NAME}; cd /home/abi/fastfood; docker-compose stop; docker-compose up -d --force-recreate",
+                                        execCommand: "docker pull ${image_name}; cd /home/abi/fastfood; docker-compose stop; docker-compose up -d --force-recreate",
                                         execTimeout: 120000,
                                     )
                                 ]
