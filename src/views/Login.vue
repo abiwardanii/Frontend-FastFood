@@ -322,14 +322,10 @@ export default {
 .welcome {
   font-family: "Roboto Slab", serif;
 }
-.form-login,
-.form-register {
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
-}
-.brand-logo {
-  border-top-left-radius: 40px;
-  border-bottom-left-radius: 40px;
+@media screen and (max-width: 767px) {
+  .brand-logo {
+    display: none;
+  }
 }
 .btn {
   background-color: #ffc229;
