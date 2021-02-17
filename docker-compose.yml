@@ -3,7 +3,7 @@ services:
     frontend:
       image: abiwardani/jenkins-ui:master
       ports: 
-          - "4040:8080"
+          - "4040:80"
       networks: 
           - fastfoodnet
       environment:
