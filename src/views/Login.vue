@@ -295,9 +295,13 @@ export default {
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&display=swap");
 .login {
-  background: url(https://user-images.githubusercontent.com/55235155/103134152-b00a8f00-46e1-11eb-9146-40794297d041.jpg)
-    no-repeat;
+  background: url(https://user-images.githubusercontent.com/55235155/103134152-b00a8f00-46e1-11eb-9146-40794297d041.jpg);
   background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -1;
+  background-position: center;
 }
 .login-shadow {
   -webkit-box-shadow: 0 10px 6px -6px #777;
@@ -309,9 +313,10 @@ export default {
 .login-content {
   width: 100%;
   max-width: 700px;
-  margin: auto;
-  padding-top: 150px;
-  padding-bottom: 176px;
+  margin-top: 10%;
+  margin: 150px 300px;
+  position: fixed;
+  z-index: 0;
 }
 .register-session {
   cursor: pointer;
