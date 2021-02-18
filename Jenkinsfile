@@ -71,12 +71,12 @@ pipeline {
                         publishers: [
                             sshPublisherDesc(
                                 configName: 'fastfood-dev',
-                                verbose: false,
+                                verbose: true,
                                 transfers: [
                                     sshTransfer(
                                         sourceFiles: 'docker-compose.yml',
-                                        execCommand: "docker pull ${image_name}; cd /home/abi/fastfood; docker-compose stop; docker-compose up -d --force-recreate",
-                                        execTimeout: 320000,
+                                        execCommand: "docker pull ${image_name}; cd /home/abi/fastfood; docker-compose up -d --force-recreate",
+                                        execTimeout: 120000,
                                     )
                                 ]
                             )
