@@ -76,7 +76,7 @@ pipeline {
                                     sshTransfer(
                                         sourceFiles: 'docker-compose.yml',
                                         execCommand: "docker pull ${image_name}; cd /home/abi/fastfood; docker-compose stop; docker-compose up -d --force-recreate",
-                                        execTimeout: 120000,
+                                        execTimeout: 320000,
                                     )
                                 ]
                             )
