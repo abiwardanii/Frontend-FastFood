@@ -20,7 +20,7 @@
                   class="nav-link header-nav-title font-weight-bold pb-1"
                   href="#"
                 >
-                  Fast Food
+                  Fast Foods
                 </h3>
               </li>
               <li class="nav-item mt-1">
