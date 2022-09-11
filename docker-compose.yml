@@ -7,7 +7,7 @@ services:
       networks: 
           - fastfoodnet
       environment:
-          - VUE_APP_URL=https://wardanifood.online/api/
+          - VUE_APP_URL=
 
 networks: 
     fastfoodnet:
